@@ -11,7 +11,7 @@
     "repository": "https://github.com/Achu2234/YuiVidioPlayer",
     "success_url": "https://t.me/AsmSafone",
     "env": {
-        "APP_ID": {
+        "API_ID": {
             "description": "Your APP_ID from my.telegram.org",
             "required": true
         },

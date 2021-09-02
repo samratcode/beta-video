@@ -19,10 +19,10 @@ A Advanced Anime Theme VC Video Player created for playing vidio in the voice ch
 - /info : to Get Devs
 
 # To Do
-Add User Info Command
-Add User Id Finder Command
-Add /ban /unban and /boardcast Command
-Add /song Command
+### Add User Info Command
+### Add User Id Finder Command
+### Add /ban /unban and /boardcast Command
+### Add /song Command
 
 And  More Updates In Future
 

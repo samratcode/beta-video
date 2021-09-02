@@ -27,6 +27,7 @@ Add /song Command
 And  More Updates In Future
 
 🚀 Deployment
+Deploy Your Own Bot ♥️ **Star 🌟 Fork 🍴 & Deploy**
 
 ### 💜 Railway
 

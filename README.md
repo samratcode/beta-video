@@ -16,6 +16,7 @@ A Advanced Anime Theme VC Video Player created for playing vidio in the voice ch
 - /help  :To Help You
 - /ly   : To Get lyrics Of Song
 - /song : To Get Link From Youtube
+- /info : to Get Devs
 
 # To Do
 Add User Info Command

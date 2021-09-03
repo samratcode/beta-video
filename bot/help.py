@@ -22,6 +22,7 @@ Commands
 - /help  :To Help You
 - /ly   : To Get lyrics Of Song
 - /song : To Get Link From Youtube
+- /quote: To Get Anime quote
  </b>""",
         reply_markup=InlineKeyboardMarkup(
             [

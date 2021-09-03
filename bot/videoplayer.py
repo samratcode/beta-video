@@ -18,6 +18,8 @@ async def stream(client, m: Message):
     elif replied.video or replied.document:
         msg = await m.reply("`Downloading...`")
         chat_id = m.chat.id
+        if os.path.exists(f'stream-{chat_id}.raw'):
+            os.remove(f'stream-{chat_id}.raw')
         try:
             video = await client.download_media(m.reply_to_message)
             await msg.edit("`Converting...`")
@@ -31,6 +33,10 @@ async def stream(client, m: Message):
             await group_call.set_video_capture(video)
             VIDEO_CALL[chat_id] = group_call
             await msg.edit("**▶️ Started Streaming!**")
+        except FloodWait as e:
+            await sleep(e.x)
+            if not group_call.is_connected:
+                await group_call.start(chat_id)
         except Exception as e:
             await msg.edit(f"**Error** -- `{e}`")
     else:

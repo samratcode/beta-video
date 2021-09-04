@@ -10,7 +10,7 @@ A Advanced Anime Theme VC Video Player created for playing vidio in the voice ch
 
 # Commands
 =>> Vidio Playing 🎧
-- /stream : Reply to Video or File That You Want To stream In Vc.
+- /stream : Reply to Video or File That You Want To stream In Vc And You Can Try Lives
 - /stop  : Stop the stream
 - /start :Start the bot
 - /help  :To Help You

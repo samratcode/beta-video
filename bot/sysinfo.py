@@ -8,14 +8,14 @@ from datetime import datetime
 from os import environ, execle, path, remove
 
 import psutil
-from pyrogram import  Client, filters, version
+from pyrogram import  Client, filters, __version__
 
 # Utils Helper
 def humanbytes(size):
     """Convert Bytes To Bytes So That Human Can Read It"""
     if not size:
         return ""
-    power = 2  10
+    power = 2 ** 10
     raised_to_pow = 0
     dict_power_n = {0: "", 1: "Ki", 2: "Mi", 3: "Gi", 4: "Ti"}
     while size > power:

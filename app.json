@@ -26,6 +26,18 @@
         "SESSION_NAME": {
             "description": "Pyrogram String Session",
             "required": true
+        },
+        "ADMIN": {
+            "description":"Add Your User ID"
+        },
+        "DB_URL": {
+            "description": "Your Mongo DB URL Obtained From mongodb.com Watch This Video https://youtu.be/HhHzCfrqsoE",
+            "value": ""
+        },
+        "DB_NAME":{ 
+               "description":"Your Mongo DB Database Name ",
+                "value": "my",
+                "required": false
         }
     },
     "addons": [],

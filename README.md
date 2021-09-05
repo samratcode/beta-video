@@ -33,7 +33,7 @@ Deploy Your Own Bot ♥️ **Star 🌟 Fork 🍴 & Deploy**
 
 ### 💜 Railway
 
-[![Deploy+on+Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/Achu2234/YuiVidioPlayer&envs=API_ID,API_HASH,BOT_TOKEN,SESSION_NAME)
+[![Deploy+on+Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/Achu2234/YuiVidioPlayer&envs=API_ID,API_HASH,BOT_TOKEN,SESSION_NAME,ADMIN,DB_URL,DB_NAME)
 
 ### 💜 Heroku
 

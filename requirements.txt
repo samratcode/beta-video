@@ -13,4 +13,6 @@ aiohttp
 psutil
 pafy
 youtube-dl
+pymongo
+dnspython
 

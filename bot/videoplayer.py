@@ -27,8 +27,8 @@ async def stream(client, m: Message):
             youtube_regex_match = re.match(youtube_regex, video)
             if youtube_regex_match:
             	try:
-            		video = pafy.new(video)
-            		best = video.getbest()
+            		yt = pafy.new(video)
+            		best = yt.getbest()
             		video_url = best.url
             	except Exception as e:
             		await msg.edit(f"**Error** -- `{e}`")

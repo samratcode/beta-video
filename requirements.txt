@@ -12,3 +12,5 @@ Pillow>=4.2.0
 aiohttp
 psutil
 pafy
+youtube-dl
+

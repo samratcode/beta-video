@@ -2,7 +2,7 @@ from time import time
 from datetime import datetime
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup 
-
+from helper.database import insert
 
 START_TIME = datetime.utcnow()
 START_TIME_ISO = START_TIME.replace(microsecond=0).isoformat()
@@ -29,6 +29,7 @@ async def _human_time_duration(seconds):
 @Client.on_message(filters.command("start"))
 async def start(client, m: Message):
    if m.chat.type == 'private':
+       insert(int(message.chat.id))
        await m.reply_text(f"**I am A advanced Anime Theme VC Video Player created for playing Video in the voice chats of Telegram Groups & Channels. \n\n**Type /help To View Comands:-** __ \n1) Type /info To View Devs`",   
                             reply_markup=InlineKeyboardMarkup(
                                 [[
@@ -60,4 +61,4 @@ async def get_uptime(client, m: Message):
         "🤖 bot status:\n"
         f"• **uptime:** `{uptime}`\n"
         f"• **start time:** `{START_TIME_ISO}`"
-    )
+    )   

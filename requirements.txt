@@ -11,8 +11,8 @@ python-rapidjson>=0.9.3
 Pillow>=4.2.0
 aiohttp
 psutil
-pafy
-youtube-dl
+pafy==0.5.5
+youtube_dl==2021.6.6
 pymongo
 dnspython
 

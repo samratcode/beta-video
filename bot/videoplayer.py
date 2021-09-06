@@ -31,7 +31,7 @@ async def stream(client, m: Message):
             		best = yt.getbest()
             		video_url = best.url
             	except Exception as e:
-            		await msg.edit(f"**Error** -- `{e}`")
+            		await m.reply(f"**Error** -- `{e}`")
             		return
             	msg = await m.reply("`Starting Live Stream...`")
             	chat_id = m.chat.id

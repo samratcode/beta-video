@@ -29,7 +29,7 @@ async def stream(client, m: Message):
             	try:
             		yt = pafy.new(video)
             		best = yt.getbest().url
-            		for stream in best:
+            		for stream in yt.streams:
             			if stream.resolution == '1280x720':
             				video_url = stream.url
             	except Exception as e:

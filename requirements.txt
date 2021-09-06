@@ -12,7 +12,7 @@ Pillow>=4.2.0
 aiohttp
 psutil
 pafy==0.5.5
-youtube_dl==2021.6.6
+youtube-dl
 pymongo
 dnspython
 

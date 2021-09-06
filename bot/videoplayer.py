@@ -28,8 +28,10 @@ async def stream(client, m: Message):
             if youtube_regex_match:
             	try:
             		yt = pafy.new(video)
-            		best = yt.getbest()
-            		video_url = best.url
+            		best = yt.getbest().url
+            		for stream in best:
+            			if stream.resolution == '1280x720':
+            				video_url = stream.url
             	except Exception as e:
             		await m.reply(f"**Error** -- `{e}`")
             		return

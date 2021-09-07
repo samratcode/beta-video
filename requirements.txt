@@ -15,4 +15,6 @@ pafy==0.5.5
 youtube-dl
 pymongo
 dnspython
+googletrans==4.0.0rc1
+gTTS
 

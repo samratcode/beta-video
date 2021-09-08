@@ -2,6 +2,7 @@ import os
 import re
 import pafy
 import asyncio
+from pyyoutube import ytdl
 from pytgcalls import GroupCallFactory
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -27,9 +28,7 @@ async def stream(client, m: Message):
             youtube_regex_match = re.match(youtube_regex, video)
             if youtube_regex_match:
             	try:
-            		yt = pafy.new(video)
-            		best = yt.getbest()
-            		video_url = best.url
+            		video_url = ytdl(video).besturl()
             	except Exception as e:
             		await m.reply(f"**Error** -- `{e}`")
             		return

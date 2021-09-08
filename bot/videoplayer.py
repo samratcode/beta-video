@@ -57,7 +57,10 @@ async def stream(client, m: Message):
             	
     elif replied.video or replied.document:
         msg = await m.reply("`Downloading...`")
-        video = await client.download_media(m.reply_to_message)
+        async def progress(current, total):
+	       await msg.edit(f"Downloading......  {current * 100 / total:.1f}%  completed")
+	       await asyncio.sleep(3)
+        video = await client.download_media(m.reply_to_message,progress=progress)
         chat_id = m.chat.id
         await asyncio.sleep(2)
         try:

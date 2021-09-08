@@ -17,4 +17,4 @@ pymongo
 dnspython
 googletrans==4.0.0rc1
 gTTS
-
+PyYouTube==1.0.6

@@ -19,6 +19,13 @@ A Advanced Anime Theme VC Video Player created for playing vidio in the voice ch
 - /info : to Get Devs
 - /quote : To Get Anime Quotes
 - /boardcast : to boardcast messages (Only for admins of bot)
+- /tts : Replay to any text you want to make audio
+- /uptime - check the bot uptime status
+- /sysinfo - show the bot system information
+-  
+  ## Guys please if you want to change the song then first /stop command then play second song
+
+
 
 # To Do
 ### Add User Info Command

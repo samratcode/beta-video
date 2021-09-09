@@ -1,16 +1,17 @@
 import os
 import re
+import sys
 import asyncio
+from asyncio import sleep
 from pyyoutube import ytdl
 from pytgcalls import GroupCallFactory
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from config import API_ID, API_HASH, SESSION_NAME
+from config import API_ID, API_HASH, SESSION_NAME, ADMIN
 
 app = Client(SESSION_NAME, API_ID, API_HASH)
 group_call_factory = GroupCallFactory(app, GroupCallFactory.MTPROTO_CLIENT_TYPE.PYROGRAM)
 VIDEO_CALL = {}
-
 
 @Client.on_message(filters.command("stream"))
 async def stream(client, m: Message):
@@ -81,3 +82,20 @@ async def stopvideo(client, m: Message):
         await m.reply("**⏹️ Stopped Streaming!**")
     except Exception as e:
         await m.reply(f"**🚫 Error** - `{e}`")
+
+@Client.on_message(filters.command("restart") & filters.user(ADMIN))
+async def restart(client, m: Message):
+    k = await m.reply_text("🔄 `Restarting ...`")
+    await sleep(3)
+    group_call = group_call_factory.get_group_call()
+    if group_call.is_connected:
+        try:
+            await group_call.stop()
+        except:
+            pass
+    os.execl(sys.executable, sys.executable, *sys.argv)
+    try:
+        await k.edit("✅ **Restarted Successfully! \nJoin @AsmSafone For More!**")
+        await k.reply_to_message.delete()
+    except:
+        pass

@@ -11,18 +11,35 @@ from pytgcalls.types.input_stream import VideoParameters
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from config import API_ID, API_HASH, SESSION_NAME
+from youtube_dl import YoutubeDL
+from youtube_dl.utils import ExtractorError
+SIGINT: int = 2
 
 app = Client(SESSION_NAME, API_ID, API_HASH)
+
 call_py = PyTgCalls(app)
 FFMPEG_PROCESSES = {}
 def raw_converter(dl, song, video):
-    subprocess.Popen(
+    return subprocess.Popen(
         ['ffmpeg', '-i', dl, '-f', 's16le', '-ac', '1', '-ar', '48000', song, '-y', '-f', 'rawvideo', '-r', '20', '-pix_fmt', 'yuv420p', '-vf', 'scale=1280:720', video, '-y'],
         stdin=None,
         stdout=None,
         stderr=None,
         cwd=None,
     )
+    
+def youtube(url: str):
+    try:
+        params = {"format": "best[height=?720]/best", "noplaylist": True}
+        yt = YoutubeDL(params)
+        info = yt.extract_info(url, download=False)
+        return info['url']
+    except ExtractorError: # do whatever
+        return 
+    except Exception:
+        return
+    
+
 
 
 @Client.on_message(filters.command("stream"))
@@ -34,6 +51,20 @@ async def stream(client, m: Message):
         else:
             livelink = m.text.split(None, 1)[1]
             chat_id = m.chat.id
+            try:
+                livelink = await asyncio.wait_for(
+                    app.loop.run_in_executor(
+                        None,
+                        lambda : youtube(livelink)
+                    ),
+                    timeout=None # Add timeout (recommended)
+                )
+            except asyncio.TimeoutError:
+                await m.reply("TimeoutError: process is taking unexpected time")
+                return
+            if not livelink:
+                await m.reply("Can't fetch source")
+                return
             process = raw_converter(livelink, f'audio{chat_id}.raw', f'video{chat_id}.raw')
             FFMPEG_PROCESSES[chat_id] = process
             msg = await m.reply("`Starting Live Stream...`")

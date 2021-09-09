@@ -1,17 +1,29 @@
 import os
-import re
-import sys
 import asyncio
-from asyncio import sleep
-from pyyoutube import ytdl
-from pytgcalls import GroupCallFactory
+import subprocess
+from pytgcalls import idle
+from pytgcalls import PyTgCalls
+from pytgcalls import StreamType
+from pytgcalls.types.input_stream import AudioParameters
+from pytgcalls.types.input_stream import InputAudioStream
+from pytgcalls.types.input_stream import InputVideoStream
+from pytgcalls.types.input_stream import VideoParameters
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from config import API_ID, API_HASH, SESSION_NAME, ADMIN
+from config import API_ID, API_HASH, SESSION_NAME
 
 app = Client(SESSION_NAME, API_ID, API_HASH)
-group_call_factory = GroupCallFactory(app, GroupCallFactory.MTPROTO_CLIENT_TYPE.PYROGRAM)
-VIDEO_CALL = {}
+call_py = PyTgCalls(app)
+FFMPEG_PROCESSES = {}
+def raw_converter(dl, song, video):
+    subprocess.Popen(
+        ['ffmpeg', '-i', dl, '-f', 's16le', '-ac', '1', '-ar', '48000', song, '-y', '-f', 'rawvideo', '-r', '20', '-pix_fmt', 'yuv420p', '-vf', 'scale=1280:720', video, '-y'],
+        stdin=None,
+        stdout=None,
+        stderr=None,
+        cwd=None,
+    )
+
 
 @Client.on_message(filters.command("stream"))
 async def stream(client, m: Message):
@@ -20,57 +32,75 @@ async def stream(client, m: Message):
         if len(m.command) < 2:
             await m.reply("`Reply to some Video or Give Some Live Stream Url!`")
         else:
-            video = m.text.split(None, 1)[1]
-            youtube_regex = (
-                                         r'(https?://)?(www\.)?'
-                                       '(youtube|youtu|youtube-nocookie)\.(com|be)/'
-                                       '(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})')
-            youtube_regex_match = re.match(youtube_regex, video)
-            if youtube_regex_match:
-            	try:
-            		video_url = ytdl(video).besturl()
-            	except Exception as e:
-            		await m.reply(f"**Error** -- `{e}`")
-            		return
-            	msg = await m.reply("`Starting Live Stream...`")
-            	chat_id = m.chat.id
-            	await asyncio.sleep(1)
-            	try:
-            	   group_call = group_call_factory.get_group_call()
-            	   await group_call.join(chat_id)
-            	   await group_call.start_video(video_url)
-            	   VIDEO_CALL[chat_id] = group_call
-            	   await msg.edit(f"**▶️ Started [Live Streaming](video) !**")
-            	except Exception as e:
-            		await msg.edit(f"**Error** -- `{e}`")
-            else:
-            	msg = await m.reply("`Starting Live Stream...`")
-            	chat_id = m.chat.id
-            	await asyncio.sleep(1)
-            	try:
-            	   group_call = group_call_factory.get_group_call()
-            	   await group_call.join(chat_id)
-            	   await group_call.start_video(video)
-            	   VIDEO_CALL[chat_id] = group_call
-            	   await msg.edit(f"**▶️ Started [Live Streaming](video) !**")
-            	except Exception as e:
-            		await msg.edit(f"**Error** -- `{e}`")
-            	
+            livelink = m.text.split(None, 1)[1]
+            chat_id = m.chat.id
+            process = raw_converter(livelink, f'audio{chat_id}.raw', f'video{chat_id}.raw')
+            FFMPEG_PROCESSES[chat_id] = process
+            msg = await m.reply("`Starting Live Stream...`")
+            await asyncio.sleep(10)
+            try:
+                audio_file = f'audio{chat_id}.raw'
+                video_file = f'video{chat_id}.raw'
+                while not os.path.exists(audio_file) or \
+                        not os.path.exists(video_file):
+                    await asyncio.sleep(2)
+                await call_py.join_group_call(
+                    chat_id,
+                    InputAudioStream(
+                        audio_file,
+                        AudioParameters(
+                            bitrate=48000,
+                        ),
+                    ),
+                    InputVideoStream(
+                        video_file,
+                        VideoParameters(
+                            width=1280,
+                            height=720,
+                            frame_rate=20,
+                        ),
+                    ),
+                    stream_type=StreamType().local_stream,
+                )
+                await msg.edit("**Started Streaming!**")
+                await idle()
+            except Exception as e:
+                await msg.edit(f"**Error** -- `{e}`")
+   
     elif replied.video or replied.document:
         msg = await m.reply("`Downloading...`")
-        async def progress(current, total):
-        	await msg.edit(f"Downloading......  {current * 100 / total:.1f}%  completed")
-        	await asyncio.sleep(3)
-        video = await client.download_media(m.reply_to_message,progress=progress)
+        video = await client.download_media(m.reply_to_message)
         chat_id = m.chat.id
-        await asyncio.sleep(2)
+        await msg.edit("`Processing...`")
+        os.system(f"ffmpeg -i '{video}' -f s16le -ac 1 -ar 48000 'audio{chat_id}.raw' -y -f rawvideo -r 20 -pix_fmt yuv420p -vf scale=640:360 'video{chat_id}.raw' -y")
         try:
-            group_call = group_call_factory.get_group_call()
-            await group_call.join(chat_id)
-            VIDEO_CALL[chat_id] = group_call
-            await msg.edit("**▶️ Started Streaming!**")
+            audio_file = f'audio{chat_id}.raw'
+            video_file = f'video{chat_id}.raw'
+            while not os.path.exists(audio_file) or \
+                    not os.path.exists(video_file):
+                await asyncio.sleep(2)
+            await call_py.join_group_call(
+                chat_id,
+                InputAudioStream(
+                    audio_file,
+                    AudioParameters(
+                        bitrate=48000,
+                    ),
+                ),
+                InputVideoStream(
+                    video_file,
+                    VideoParameters(
+                        width=640,
+                        height=360,
+                        frame_rate=20,
+                    ),
+                ),
+                stream_type=StreamType().local_stream,
+            )
+            await msg.edit("**Started Streaming!**")
         except Exception as e:
-            await msg.edit(f"**🚫 Error** - `{e}`")
+            await msg.edit(f"**Error** -- `{e}`")
+            await idle()
     else:
         await m.reply("`Reply to some Video!`")
 
@@ -78,24 +108,14 @@ async def stream(client, m: Message):
 async def stopvideo(client, m: Message):
     chat_id = m.chat.id
     try:
-        await VIDEO_CALL[chat_id].stop()
+        process = FFMPEG_PROCESSES.get(chat_id)
+        if process:
+            try:
+                process.send_signal(SIGINT)
+                await asyncio.sleep(3)
+            except Exception as e:
+                print(e)
+        await call_py.leave_group_call(chat_id)
         await m.reply("**⏹️ Stopped Streaming!**")
     except Exception as e:
         await m.reply(f"**🚫 Error** - `{e}`")
-
-@Client.on_message(filters.command("restart") & filters.user(ADMIN))
-async def restart(client, m: Message):
-    k = await m.reply_text("🔄 `Restarting ...`")
-    await sleep(3)
-    group_call = group_call_factory.get_group_call()
-    if group_call.is_connected:
-        try:
-            await group_call.stop()
-        except:
-            pass
-    os.execl(sys.executable, sys.executable, *sys.argv)
-    try:
-        await k.edit("✅ **Restarted Successfully! \nJoin @AsmSafone For More!**")
-        await k.reply_to_message.delete()
-    except:
-        pass

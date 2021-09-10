@@ -4,7 +4,7 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 
 @Client.on_message(
-    filters.command("info")
+    filters.command("dev")
     & filters.private
     & ~ filters.edited
 )

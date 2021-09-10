@@ -1,4 +1,4 @@
-# Yui Vidio Player
+# Yui Vidio Player.
 A Advanced Anime Theme VC Video Player created for playing vidio in the voice chats of Telegram Groups
 
 # Demo 

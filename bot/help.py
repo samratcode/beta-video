@@ -13,7 +13,7 @@ async def help(client: Client, message: Message):
         f"""<b>Hi {message.from_user.first_name}!
 Setting up
 1) Add this Bot to your Group and Make it Admin 
-2) Add @YuiVideoPlayer to your Group 
+2) Add @ThePyrogram to your Group 
 Commands
 =>> Vidio Playing 🎧
 - /stream : Reply to Video or File That You Want To stream In Vc.

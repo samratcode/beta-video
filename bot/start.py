@@ -26,7 +26,7 @@ async def _human_time_duration(seconds):
     return ', '.join(parts)
 
 
-@Client.on_message(filters.command("start"))
+@Client.on_message(filters.command("vcstart"))
 async def start(client, m: Message):
    if m.chat.type == 'private':
        insert(int(m.chat.id))

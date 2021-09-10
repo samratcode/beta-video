@@ -4,7 +4,7 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 
 @Client.on_message(
-    filters.command("help")
+    filters.command("vchelp")
     & filters.private
     & ~ filters.edited
 )
@@ -28,7 +28,7 @@ Commands
             [
                 [
                     InlineKeyboardButton(
-                        "🎵 Support Chat", url="https://t.me/safothebot"
+                        "🎵 Support Chat", url="https://t.me/RukaSupport"
                     )
                 ]
             ]

@@ -38,17 +38,17 @@ async def start(client, m: Message):
                                     ]]
                             ))
    else:
-      await m.reply_text(f"**Hola, Join @Sayusuperbot!**")
+      await m.reply_text(f"**Music Bot Online** {delta_ping * 1000:.3f} ms")
 
 
-@Client.on_message(filters.command("ping"))
+@Client.on_message(filters.command("vcping"))
 async def ping_pong(client, m: Message):
     start = time()
     m_reply = await m.reply_text("pinging...")
     delta_ping = time() - start
     await m_reply.edit_text(
-        "🏓 `PONG!!`\n"
-        f"⚡️ `{delta_ping * 1000:.3f} ms`"
+        " `PONG MF!!`\n"
+        f" `{delta_ping * 1000:.3f} ms`"
     )
 
 
@@ -58,7 +58,7 @@ async def get_uptime(client, m: Message):
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
     await m.reply_text(
-        "🤖 bot status:\n"
+        "bot status:\n"
         f"• **uptime:** `{uptime}`\n"
         f"• **start time:** `{START_TIME_ISO}`"
     )   

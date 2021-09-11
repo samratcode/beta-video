@@ -42,7 +42,7 @@ def youtube(url: str):
 
 
 
-@Client.on_message(filters.command("stream"))
+@Client.on_message(filters.command("vplay"))
 async def stream(client, m: Message):
     replied = m.reply_to_message
     if not replied:
@@ -67,7 +67,7 @@ async def stream(client, m: Message):
                 return
             process = raw_converter(livelink, f'audio{chat_id}.raw', f'video{chat_id}.raw')
             FFMPEG_PROCESSES[chat_id] = process
-            msg = await m.reply("`Starting Live Stream...`")
+            msg = await m.reply("Starting Live Stream by YT")
             await asyncio.sleep(10)
             try:
                 audio_file = f'audio{chat_id}.raw'
@@ -93,7 +93,7 @@ async def stream(client, m: Message):
                     ),
                     stream_type=StreamType().local_stream,
                 )
-                await msg.edit("**Started Streaming!**")
+                await msg.edit("**Started Streaming Via YouTube**")
                 await idle()
             except Exception as e:
                 await msg.edit(f"**Error** -- `{e}`")
@@ -128,14 +128,14 @@ async def stream(client, m: Message):
                 ),
                 stream_type=StreamType().local_stream,
             )
-            await msg.edit("**Started Streaming!**")
+            await msg.edit("**Started Streaming Via YouTube**")
         except Exception as e:
             await msg.edit(f"**Error** -- `{e}`")
             await idle()
     else:
         await m.reply("`Reply to some Video!`")
 
-@Client.on_message(filters.command("stop"))
+@Client.on_message(filters.command("end"))
 async def stopvideo(client, m: Message):
     chat_id = m.chat.id
     try:
@@ -147,6 +147,6 @@ async def stopvideo(client, m: Message):
             except Exception as e:
                 print(e)
         await call_py.leave_group_call(chat_id)
-        await m.reply("**⏹️ Stopped Streaming!**")
+        await m.reply("**OK ⏹️ Stopped Streaming!**")
     except Exception as e:
         await m.reply(f"**🚫 Error** - `{e}`")

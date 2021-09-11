@@ -30,7 +30,7 @@ async def _human_time_duration(seconds):
 async def start(client, m: Message):
    if m.chat.type == 'private':
        insert(int(m.chat.id))
-       await m.reply_text(f"**I am A advanced Anime Theme VC Video Player created for playing Video in the voice chats of Telegram Groups & Channels. \n\n**Type /help To View Comands:-** __ \n1) Type /info To View Devs`",   
+       await m.reply_text(f"**I am A BOT  Video Player And Group Management.\n\n**Type /vchelp To View Comands:-** __ \n1) Type /info To View Devs`",   
                             reply_markup=InlineKeyboardMarkup(
                                 [[
                                      InlineKeyboardButton(
@@ -38,7 +38,7 @@ async def start(client, m: Message):
                                     ]]
                             ))
    else:
-      await m.reply_text(f"**Music Bot Online** {delta_ping * 1000:.3f} ms")
+      await m.reply_text(f"**Music Bot Online** {delta_ping} ms")
 
 
 @Client.on_message(filters.command("vcping"))
@@ -58,7 +58,6 @@ async def get_uptime(client, m: Message):
     uptime_sec = (current_time - START_TIME).total_seconds()
     uptime = await _human_time_duration(int(uptime_sec))
     await m.reply_text(
-        "bot status:\n"
-        f"• **uptime:** `{uptime}`\n"
-        f"• **start time:** `{START_TIME_ISO}`"
+        "bot Online:\n"
+        f"• **uptime** `{uptime}`\n"
     )   

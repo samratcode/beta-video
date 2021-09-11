@@ -17,18 +17,14 @@ Setting up
 Commands
 =>> Vidio Playing 🎧
 - /vplay : Reply to Video or File That You Want To stream In Vc.
-- /stop  : Stop the stream
-- /start :Start the bot
-- /help  :To Help You
-- /ly   : To Get lyrics Of Song
-- /song : To Get Link From Youtube
-- /quote: To Get Anime quote
+- /end  : Stop the stream
+- /search : To Get Link From Youtube
  </b>""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "🎵 Support Chat", url="https://t.me/RukaSupport"
+                        "Support Chat", url="https://t.me/RukaSupport"
                     )
                 ]
             ]

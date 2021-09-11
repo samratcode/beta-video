@@ -16,7 +16,7 @@ Setting up
 2) Add @ThePyrogram to your Group 
 Commands
 =>> Vidio Playing 🎧
-- /stream : Reply to Video or File That You Want To stream In Vc.
+- /vplay : Reply to Video or File That You Want To stream In Vc.
 - /stop  : Stop the stream
 - /start :Start the bot
 - /help  :To Help You

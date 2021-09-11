@@ -38,7 +38,12 @@ async def start(client, m: Message):
                                     ]]
                             ))
    else:
-      await m.reply_text(f"**Music Bot Online** {delta_ping} ms")
+      await m.reply_text(f"**Music Bot Online**")
+                 reply_markup=InlineKeyboardMarkup(
+                                [[
+                                     InlineKeyboardButton(
+                                            "Support", url="https://t.me/RukaSupport")
+                                    ]]
 
 
 @Client.on_message(filters.command("vcping"))
